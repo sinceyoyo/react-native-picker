@@ -66,7 +66,7 @@ import static android.graphics.Color.argb;
  * 3. Added pickerFontSize
  * 4. Used LifecycleEventListener replace Application.ActivityLifecycleCallbacks
  * 5. Fixed other bug
- *
+ * <p>
  * Edited by heng on 2017/01/17
  * 1. Added select(ReadableArray array, Callback callback)
  * 2. Optimization code
@@ -286,83 +286,83 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
 
             ReadableArray pickerData = options.getArray(PICKER_DATA);
 
-        if(pickerData != null && pickerData.size() >0){
-          int pickerViewHeight;
-            String name = pickerData.getType(0).name();
-            switch (name) {
-                case "Map":
-                    curStatus = 1;
-                    pickerViewLinkage.setVisibility(View.VISIBLE);
-                    pickerViewAlone.setVisibility(View.GONE);
+            if (pickerData != null && pickerData.size() > 0) {
+                int pickerViewHeight;
+                String name = pickerData.getType(0).name();
+                switch (name) {
+                    case "Map":
+                        curStatus = 1;
+                        pickerViewLinkage.setVisibility(View.VISIBLE);
+                        pickerViewAlone.setVisibility(View.GONE);
 
-                    pickerViewLinkage.setPickerData(pickerData, weights);
-                    pickerViewLinkage.setTextColor(pickerTextColor);
-                    pickerViewLinkage.setTextSize(pickerTextSize);
-                    pickerViewLinkage.setIsLoop(isLoop);
+                        pickerViewLinkage.setPickerData(pickerData, weights);
+                        pickerViewLinkage.setTextColor(pickerTextColor);
+                        pickerViewLinkage.setTextSize(pickerTextSize);
+                        pickerViewLinkage.setIsLoop(isLoop);
 
-                    pickerViewLinkage.setOnSelectListener(new OnSelectedListener() {
-                        @Override
-                        public void onSelected(ArrayList<ReturnData> selectedList) {
-                            returnData = selectedList;
-                            commonEvent(EVENT_KEY_SELECTED);
-                        }
-                    });
-                    pickerViewHeight = pickerViewLinkage.getViewHeight();
-                    break;
-                default:
-                    curStatus = 0;
-                    pickerViewAlone.setVisibility(View.VISIBLE);
-                    pickerViewLinkage.setVisibility(View.GONE);
+                        pickerViewLinkage.setOnSelectListener(new OnSelectedListener() {
+                            @Override
+                            public void onSelected(ArrayList<ReturnData> selectedList) {
+                                returnData = selectedList;
+                                commonEvent(EVENT_KEY_SELECTED);
+                            }
+                        });
+                        pickerViewHeight = pickerViewLinkage.getViewHeight();
+                        break;
+                    default:
+                        curStatus = 0;
+                        pickerViewAlone.setVisibility(View.VISIBLE);
+                        pickerViewLinkage.setVisibility(View.GONE);
 
-                    pickerViewAlone.setPickerData(pickerData, weights);
-                    pickerViewAlone.setTextColor(pickerTextColor);
-                    pickerViewAlone.setTextSize(pickerTextSize);
-                    pickerViewAlone.setIsLoop(isLoop);
+                        pickerViewAlone.setPickerData(pickerData, weights);
+                        pickerViewAlone.setTextColor(pickerTextColor);
+                        pickerViewAlone.setTextSize(pickerTextSize);
+                        pickerViewAlone.setIsLoop(isLoop);
 
-                    pickerViewAlone.setOnSelectedListener(new OnSelectedListener() {
-                        @Override
-                        public void onSelected(ArrayList<ReturnData> selectedList) {
-                            returnData = selectedList;
-                            commonEvent(EVENT_KEY_SELECTED);
-                        }
-                    });
+                        pickerViewAlone.setOnSelectedListener(new OnSelectedListener() {
+                            @Override
+                            public void onSelected(ArrayList<ReturnData> selectedList) {
+                                returnData = selectedList;
+                                commonEvent(EVENT_KEY_SELECTED);
+                            }
+                        });
 
-                    pickerViewHeight = pickerViewAlone.getViewHeight();
-                    break;
-            }
-
-            if (options.hasKey(SELECTED_VALUE)) {
-                ReadableArray array = options.getArray(SELECTED_VALUE);
-                String[] selectedValue = getSelectedValue(array);
-                select(selectedValue);
-            }
-
-            if (options.hasKey(PICKER_BG_COLOR)) {
-                ReadableArray array = options.getArray(PICKER_BG_COLOR);
-                int[] colors = getColor(array);
-                pickerLayout.setBackgroundColor(argb(colors[3], colors[0], colors[1], colors[2]));
-            }
-
-}
-          
-            int height = barViewHeight + pickerViewHeight;
-            if (dialog == null) {
-                dialog = new Dialog(activity, R.style.Dialog_Full_Screen);
-                dialog.setContentView(view);
-                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-                Window window = dialog.getWindow();
-                if (window != null) {
-                    layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-                    layoutParams.format = PixelFormat.TRANSPARENT;
-                    layoutParams.windowAnimations = R.style.PickerAnim;
-                    layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    layoutParams.height = height;
-                    layoutParams.gravity = Gravity.BOTTOM;
-                    window.setAttributes(layoutParams);
+                        pickerViewHeight = pickerViewAlone.getViewHeight();
+                        break;
                 }
-            } else {
-                dialog.dismiss();
-                dialog.setContentView(view);
+
+                if (options.hasKey(SELECTED_VALUE)) {
+                    ReadableArray array = options.getArray(SELECTED_VALUE);
+                    String[] selectedValue = getSelectedValue(array);
+                    select(selectedValue);
+                }
+
+                if (options.hasKey(PICKER_BG_COLOR)) {
+                    ReadableArray array = options.getArray(PICKER_BG_COLOR);
+                    int[] colors = getColor(array);
+                    pickerLayout.setBackgroundColor(argb(colors[3], colors[0], colors[1], colors[2]));
+                }
+
+
+                int height = barViewHeight + pickerViewHeight;
+                if (dialog == null) {
+                    dialog = new Dialog(activity, R.style.Dialog_Full_Screen);
+                    dialog.setContentView(view);
+                    WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                    Window window = dialog.getWindow();
+                    if (window != null) {
+                        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+                        layoutParams.format = PixelFormat.TRANSPARENT;
+                        layoutParams.windowAnimations = R.style.PickerAnim;
+                        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                        layoutParams.height = height;
+                        layoutParams.gravity = Gravity.BOTTOM;
+                        window.setAttributes(layoutParams);
+                    }
+                } else {
+                    dialog.dismiss();
+                    dialog.setContentView(view);
+                }
             }
         }
     }
