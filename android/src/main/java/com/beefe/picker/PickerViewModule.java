@@ -286,7 +286,8 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
 
             ReadableArray pickerData = options.getArray(PICKER_DATA);
 
-            int pickerViewHeight;
+        if(pickerData != null && pickerData.size() >0){
+          int pickerViewHeight;
             String name = pickerData.getType(0).name();
             switch (name) {
                 case "Map":
@@ -342,6 +343,8 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
                 pickerLayout.setBackgroundColor(argb(colors[3], colors[0], colors[1], colors[2]));
             }
 
+}
+          
             int height = barViewHeight + pickerViewHeight;
             if (dialog == null) {
                 dialog = new Dialog(activity, R.style.Dialog_Full_Screen);
